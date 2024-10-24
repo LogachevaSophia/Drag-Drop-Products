@@ -1,126 +1,85 @@
-let count_products = 0;
-let basket = document.querySelector(".basket")
-let basketJson = basket.getBoundingClientRect()
+let countProducts = 0;
+const basket = document.querySelector(".basket");
+const basketJson = basket.getBoundingClientRect();
 
 // Разрешить перетаскивание в зону
 function allowDrop(event) {
     event.preventDefault();
 }
 
-function drag(event) {
-    const img = new Image();
-    img.src = ''; // Пусть пустое изображение
-    // Скрываем "призрака"
-    event.dataTransfer.setDragImage(img, 0, 0); F
-    // event.dataTransfer.setData("text", event.target.id);
-}
-
 
 // Упускание элемента
 function drop(event) {
     event.preventDefault();
-
-    // Проверяем, что элемент перетаскивается между блоками
     const targetBlock = event.target.closest(".block"); // Получаем блок, куда перетаскивается
     const draggingItem = document.querySelector(".dragging"); // Перетаскиваемый элемент
 
-    // Перемещаем только в другой блок
     if (draggingItem && draggingItem.parentElement !== targetBlock) {
-        targetBlock.appendChild(draggingItem); // Переместить элемент в новый блок
-        count_products++;
+        targetBlock.appendChild(draggingItem); // Перемещаем элемент
+        countProducts++;
         updateBasketPreview();
-        if (count_products > 2) {
-            document.querySelector("a#payCard").classList.add("show")
-        }
+        togglePayButton();
     }
 }
 
-
-//Функция пересчета координат, необходимо для того, чтобы продукты гарантировано оставались в корзине и не выходили за ее края
+// Пересчет координат, чтобы продукты не вылетазали а пределы корзины
 function calc_position(pageX, item) {
-
-    let eventX = pageX
-    if ((eventX < basketJson.left + 60)) {
+    let eventX = pageX;
+    const itemRect = item?.getBoundingClientRect();
+    if (eventX < basketJson.left + 60) {
         eventX = basketJson.left + 60;
-
     }
-    if (eventX > basketJson.right - item?.getBoundingClientRect().width - 20) {
-        eventX = basketJson.right - item?.getBoundingClientRect().width - 20;
+    if (eventX > basketJson.right - itemRect.width - 20) {
+        eventX = basketJson.right - itemRect.width - 20;
     }
     return eventX;
 }
 
-// Обработчик для touchmove
+// Обработчик перемещения элемента
 function touchMove(event, clonedElement, offsetX, offsetY) {
     event.preventDefault();
-    const touchLocation = event.targetTouches[0]; // Получаем координаты касания
+    const touchLocation = event.targetTouches[0];
     const item = event.target;
 
-    // Изменяем позицию элемента в реальном времени
-    item.style.left = `calc(${calc_position(touchLocation.pageX, item)}px  - (100vw - ${basketJson.width}px) / 2)`
+    item.style.left = `calc(${calcPosition(touchLocation.pageX, item)}px - (100vw - ${basketJson.width}px) / 2)`;// расстояние высчитывается с учетом отсутпов в браузерном окне, поскольку верстка адаптивна
+
     if (clonedElement) {
-        clonedElement.style.position = 'absolute'; // Устанавливаем абсолютное позиционирование
-        clonedElement.style.left = `${touchLocation.pageX - offsetX}px`; // Обновляем X с учетом смещения
-        clonedElement.style.top = `${touchLocation.pageY - offsetY}px`; // Обновляем Y с учетом смещения
+        clonedElement.style.position = 'absolute';
+        clonedElement.style.left = `${touchLocation.pageX - offsetX}px`;
+        clonedElement.style.top = `${touchLocation.pageY - offsetY}px`;
     }
 }
 
-// Обработчик для touchend (когда отпустили)
+// Обработчик окончания касания
 function touchEnd(event) {
-    const targetBlock = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY).closest(".block");
+    const targetBlock = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY)?.closest(".block");
     const draggingItem = event.target;
 
     if (draggingItem && draggingItem.parentElement !== targetBlock && targetBlock) {
-        targetBlock.appendChild(draggingItem); // Перемещаем элемент в новый блок
-        updateBasketPreview()
-        count_products++;
-        if (count_products > 2) {
-            document.querySelector("a#payCard").classList.add("show");
-        }
+        targetBlock.appendChild(draggingItem);
+        updateBasketPreview();
+        countProducts++;
+        togglePayButton();
         navigator.vibrate(200);
     }
 }
 
 // Назначаем события для всех перетаскиваемых элементов
-const draggableItems = document.querySelectorAll('.draggable-item');
-draggableItems.forEach(item => {
-
+document.querySelectorAll('.draggable-item').forEach(item => {
     const productContainer = item.closest('.product-container');
     const label = productContainer.querySelector('.label');
     let clonedElement = null;
-    let offsetX = 0
-    let offsetY = 0
-    item.addEventListener('mouseleave', () => {
+    let offsetX = 0, offsetY = 0;
 
-        label.classList.remove("show")
+    // Мышь
+    item.addEventListener('mouseenter', () => label.classList.toggle("show"));
+    item.addEventListener('mouseleave', () => label.classList.remove("show"));
+    item.addEventListener('mousedown', () => item.classList.add('dragging'));
+    item.addEventListener('mouseup', () => item.classList.remove('dragging'));
 
-    });
-    item.addEventListener('mousedown', (e) => {
-        e.target.classList.add('dragging'); // Устанавливаем класс для увеличения
-        if (!label.classList.contains("show"))
-            label.classList.add("show")
-        else
-            label.classList.remove("show")
-
-    });
-
-    item.addEventListener('drag', (e) => {
-        if (clonedElement) {
-            clonedElement.style.position = 'absolute'; // Устанавливаем абсолютное позиционирование
-            clonedElement.style.left = `${e.pageX - offsetX}px`; // Обновляем X с учетом смещения
-            clonedElement.style.top = `${e.pageY - offsetY}px`; // Обновляем Y с учетом смещения
-        }
-
-
-    });
-    item.addEventListener('mouseup', (e) => {
-        e.target.classList.remove('dragging') // Убираем класс для увеличения
-        if (!label.classList.contains("show"))
-            label.classList.remove("show")
-    });
+   
     item.addEventListener('dragstart', (e) => {
-        // e.preventDefault()
-        e.target.classList.add('dragging'); // Устанавливаем класс для перетаскиваемого элемента
+        e.target.classList.add('dragging'); 
         if (!label.classList.contains("show"))
             label.classList.add("show")
         else
@@ -132,59 +91,46 @@ draggableItems.forEach(item => {
         offsetY = e.clientY - rect.top;
 
     });
-
-    item.addEventListener('dragend', (e) => {
-        e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
-
-
-        e.target.style.left = `calc(${calc_position(e.clientX, item)}px - (100vw - ${basketJson.width}px) / 2`
-        if (!label.classList.contains("show"))
-            label.classList.remove("show")
+    item.addEventListener('drag', (e) => {
         if (clonedElement) {
-            // Удаляем клонированный элемент
-            document.body.removeChild(clonedElement);
-            clonedElement = null; // Сбрасываем переменную
+            clonedElement.style.position = 'absolute'; // Устанавливаем абсолютное позиционирование со смещением
+            clonedElement.style.left = `${e.pageX - offsetX}px`; 
+            clonedElement.style.top = `${e.pageY - offsetY}px`; 
         }
+
 
     });
 
-    // Добавляем поддержку касаний для мобильных устройств
+    item.addEventListener('dragend', (e) => {
+        item.classList.remove('dragging');
+        document.body.removeChild(clonedElement);
+        clonedElement = null;
+        e.target.style.left = `calc(${calc_position(e.clientX, item)}px - (100vw - ${basketJson.width}px) / 2`;// расстояние высчитывается с учетом отсутпов в браузерном окне, поскольку верстка адаптивна
+    });
+
+    // Touch события
     item.addEventListener('touchstart', (e) => {
-        e.target.classList.add('dragging'); // Устанавливаем класс
-        
-        if (!label.classList.contains("show"))
-            label.classList.add("show")
-        else
-            label.classList.remove("show")
-        clonedElement = item.cloneNode(true);
-        document.body.appendChild(clonedElement);
+        const touchLocation = e.targetTouches[0];
         const rect = item.getBoundingClientRect();
-        const touchLocation = event.targetTouches[0]; 
         offsetX = touchLocation.clientX - rect.left;
         offsetY = touchLocation.clientY - rect.top;
+        item.classList.add('dragging');
+        clonedElement = item.cloneNode(true);
+        document.body.appendChild(clonedElement);
         navigator.vibrate(200);
     });
 
-    item.addEventListener('touchmove', (e) => touchMove(e, clonedElement, offsetX, offsetY)); // Обрабатываем перемещение
+    item.addEventListener('touchmove', (e) => touchMove(e, clonedElement, offsetX, offsetY));
     item.addEventListener('touchend', (e) => {
-        if (label.classList.contains("show"))
-            label.classList.remove("show")
-
-        e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
-        if (clonedElement) {
-            // Удаляем клонированный элемент
-            document.body.removeChild(clonedElement);
-            clonedElement = null; // Сбрасываем переменную
-        }
-        touchEnd(e); // Обрабатываем конец перетаскивания
+        item.classList.remove('dragging');
+        document.body.removeChild(clonedElement);
+        clonedElement = null;
+        touchEnd(e);
     });
 });
 
-function closeoverlay() {
-    document.querySelector('.overlay').style.display = 'none';
-}
+// Обновление корзины
 function updateBasketPreview() {
-    const basketPreview = document.querySelector('.basket-preview');
     const basketList = document.querySelector('#basket-items-list');
     const items = document.querySelectorAll('.basket .draggable-item');
 
@@ -192,16 +138,17 @@ function updateBasketPreview() {
     items.forEach(item => {
         const listItem = document.createElement('li');
         const link = document.createElement('a');
-        link.textContent = item.alt
-        link.href = item.attributes["data-link"].nodeValue
-        listItem.appendChild(link)
+        link.textContent = item.alt || 'Item';
+        link.href = item.dataset.link;
+        listItem.appendChild(link);
         basketList.appendChild(listItem);
     });
 
-    if (items.length > 0) {
-        basketPreview.classList.add('show');
-    } else {
-        basketPreview.classList.remove('show');
-    }
+    document.querySelector('.basket-preview').classList.toggle('show', items.length > 0);
 }
 
+// Переключение отображения кнопки оплаты
+function togglePayButton() {
+    const payButton = document.querySelector("a#payCard");
+    payButton.classList.toggle("show", countProducts > 2);
+}
