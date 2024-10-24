@@ -25,6 +25,11 @@ This project demonstrates a drag-and-drop shopping cart system where users can d
     - Once 3 items have been added to the basket, the "Pay" button appears, allowing the user to proceed to the checkout.
 - Touch Support:
     - On mobile, dragging and dropping items works seamlessly via touch gestures. Additionally, mobile devices will vibrate when an item is dragged.
+- Ticket appearance logic:
+    -  Desktop:
+       - When hovering over a product, a ticket with details appears: product name, price, composition.
+    - Mobile:
+      - When tapping on a product, a ticket with details appears: product name, price, composition.
 
 ## Usage
 ### Adding Items to the Basket
@@ -38,7 +43,19 @@ This project demonstrates a drag-and-drop shopping cart system where users can d
 
 ### Clearing the Basket
 - To clear the basket, simply refresh the page.
-- 
+
+### View product information
+#### Link in the product list
+- Add the product to the cart
+- Expand the product list
+- Click on the desired product
+#### On the project page
+- Desktop:
+  - When hovering over a product, a ticket with details appears: product name, price, composition.
+- Mobile:
+  - When tapping on a product, a ticket with details appears: product name, price, composition.
+
+
 # Корзина с Перетаскиванием (Drag and Drop)
 Этот проект демонстрирует систему корзины с поддержкой drag-and-drop, где пользователи могут перетаскивать товары с полки в корзину. Кнопка оплаты появляется, когда в корзину добавлено не менее 3 предметов. Проект поддерживает взаимодействие как на десктопе, так и на мобильных устройствах, а также включает кастомное поведение перетаскивания с плавным перемещением элементов по экрану.
 
@@ -68,6 +85,11 @@ This project demonstrates a drag-and-drop shopping cart system where users can d
    - Как только в корзине оказывается 3 или более товаров, появляется кнопка "Оплатить".
 - Поддержка Touch:
   - На мобильных устройствах перетаскивание и добавление в корзину работают с помощью касательных жестов. При начале перетаскивания устройство вибрирует.
+- Логика появление тикета:
+  - На десктопе:
+    - При наведении курсором на продукт, появляется тикет с данными: название продукта, стоимость, состав.
+  - На мобильных устройствах:
+    - При нажатии на продукт появляется тикет с данными: название продукта, стоимость, состав.
  
 ## Использование
 ### Добавление товаров в корзину
@@ -82,3 +104,18 @@ This project demonstrates a drag-and-drop shopping cart system where users can d
 
 ### Очистка корзины
 - Чтобы очистить корзину, просто обновите страницу.
+
+### Посмотреть ифнормацию о товаре
+#### Ссылка в списке продуктов
+- Добавить товар в корзину
+- Раскрыть список продуктов
+- Нажать на интересующий товар
+#### На странице проекта
+- На десктопе:
+  - При наведении курсором на продукт, появляется тикет с данными: название продукта, стоимость, состав.
+- На мобильных устройствах:
+  - При нажатии на продукт появляется тикет с данными: название продукта, стоимость, состав.
+
+
+
+
