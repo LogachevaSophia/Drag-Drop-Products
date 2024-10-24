@@ -80,8 +80,6 @@ section>div.container {
 }
 
 .basket {
-    /* position: absolute; */
-    /* margin-top: 20px; */
 
     width: 276.08px;
 
@@ -108,27 +106,15 @@ section>div.container {
 
 .draggable-item.dragging {
     transform: scale(1.1);
-    /* position: absolute; */
-    /* Увеличиваем предмет, пока его перетаскивают */
 }
 
 .basket-image {
     height: auto;
-    /* margin-top: -90px; */
+
     z-index: 5;
     position: absolute;
 }
 
-/* button{
-    background-color: rgba(252, 224, 0, 1);
-    border: none;
-    border-radius: 16px;
-    padding: 18px 12px;
-    z-index: 999;
-    position: relative;
-    top: 38px;
-    cursor: pointer;
-} */
 
 #payCard {
     display: none;
@@ -208,14 +194,12 @@ section>div.container {
 
 details {
     font-size: 1rem;
-    /* margin: 7em auto; */
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
         0 10px 10px -5px rgba(0, 0, 0, 0.04);
     width: 100%;
     background: #ffffff;
     border-radius: 8px;
     position: relative;
-    /* width: 500px; */
     min-width: 200px;
 
 }
@@ -277,7 +261,6 @@ summary::-webkit-details-marker {
 .rounded {
     counter-reset: li;
     list-style: none;
-    /* font: 14px "Trebuchet MS", "Lucida Sans"; */
     padding: 0;
     text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
 }
@@ -335,19 +318,18 @@ summary::-webkit-details-marker {
     width: max-content;
     max-width: 250px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-                0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    
-    /* Начальные параметры для анимации */
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
     opacity: 0;
     max-height: 0;
     transition: max-height 0.3s ease, opacity 0.3s ease;
-    overflow: hidden; /* чтобы содержимое не вылазило при уменьшении высоты */
+    overflow: hidden;
 }
 
 .label.show {
     display: block;
     opacity: 1;
-    max-height: 200px; /* достаточно большое значение, чтобы вместить контент */
+    max-height: 200px;
 }
 
 
@@ -373,4 +355,3 @@ summary::-webkit-details-marker {
 .product-container {
     position: relative;
 }
-
