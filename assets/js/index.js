@@ -8,13 +8,13 @@ function allowDrop(event) {
 }
 
 function drag(event) {
-    event.dataTransfer.setData("text", event.target.id);
+    const img = new Image();
+    img.src = ''; // Пусть пустое изображение
+    // Скрываем "призрака"
+    event.dataTransfer.setDragImage(img, 0, 0); F
+    // event.dataTransfer.setData("text", event.target.id);
 }
 
-// Начать перетаскивание
-function drag(event) {
-    event.dataTransfer.setData("text", event.target.id);
-}
 
 // Упускание элемента
 function drop(event) {
@@ -83,11 +83,13 @@ draggableItems.forEach(item => {
 
     const productContainer = item.closest('.product-container');
     const label = productContainer.querySelector('.label');
-
-
+    let clonedElement = null;
+    let offsetX = 0
+    let offsetY = 0
     item.addEventListener('mouseleave', () => {
 
         label.classList.remove("show")
+
     });
     item.addEventListener('mousedown', (e) => {
         e.target.classList.add('dragging'); // Устанавливаем класс для увеличения
@@ -95,29 +97,51 @@ draggableItems.forEach(item => {
             label.classList.add("show")
         else
             label.classList.remove("show")
+
+    });
+
+    item.addEventListener('drag', (e) => {
+        if (clonedElement) {
+            clonedElement.style.position = 'absolute'; // Устанавливаем абсолютное позиционирование
+            clonedElement.style.left = `${e.pageX-offsetX}px`; // Обновляем X с учетом смещения
+            clonedElement.style.top = `${e.pageY-offsetY}px`; // Обновляем Y с учетом смещения
+        }
+
+
     });
     item.addEventListener('mouseup', (e) => {
         e.target.classList.remove('dragging') // Убираем класс для увеличения
         if (!label.classList.contains("show"))
             label.classList.remove("show")
-
     });
     item.addEventListener('dragstart', (e) => {
+        // e.preventDefault()
         e.target.classList.add('dragging'); // Устанавливаем класс для перетаскиваемого элемента
         if (!label.classList.contains("show"))
             label.classList.add("show")
         else
             label.classList.remove("show")
+        clonedElement = item.cloneNode(true);
+        document.body.appendChild(clonedElement);
+        const rect = item.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
     });
 
     item.addEventListener('dragend', (e) => {
         e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
 
-        
+
         e.target.style.left = `calc(${calc_position(e.clientX, item)}px - (100vw - ${basketJson.width}px) / 2`
         if (!label.classList.contains("show"))
             label.classList.remove("show")
-          
+        if (clonedElement) {
+            // Удаляем клонированный элемент
+            document.body.removeChild(clonedElement);
+            clonedElement = null; // Сбрасываем переменную
+        }
+
     });
 
     // Добавляем поддержку касаний для мобильных устройств
@@ -134,13 +158,13 @@ draggableItems.forEach(item => {
     item.addEventListener('touchend', (e) => {
         if (label.classList.contains("show"))
             label.classList.remove("show")
-           
+
         e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
         touchEnd(e); // Обрабатываем конец перетаскивания
     });
 });
 
-function closeoverlay(){
+function closeoverlay() {
     document.querySelector('.overlay').style.display = 'none';
 }
 function updateBasketPreview() {
