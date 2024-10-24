@@ -1,5 +1,9 @@
 let countProducts = 0;
 const basket = document.querySelector(".basket");
+
+// Привязываем события через addEventListener
+basket.addEventListener('dragover', allowDrop);
+basket.addEventListener('drop', drop);
 const basketJson = basket.getBoundingClientRect();
 
 // Разрешить перетаскивание в зону
@@ -41,7 +45,7 @@ function touchMove(event, clonedElement, offsetX, offsetY) {
     const touchLocation = event.targetTouches[0];
     const item = event.target;
 
-    item.style.left = `calc(${calcPosition(touchLocation.pageX, item)}px - (100vw - ${basketJson.width}px) / 2)`;// расстояние высчитывается с учетом отсутпов в браузерном окне, поскольку верстка адаптивна
+    item.style.left = `calc(${calc_position(touchLocation.pageX, item)}px - (100vw - ${basketJson.width}px) / 2)`;// расстояние высчитывается с учетом отсутпов в браузерном окне, поскольку верстка адаптивна
 
     if (clonedElement) {
         clonedElement.style.position = 'absolute';
