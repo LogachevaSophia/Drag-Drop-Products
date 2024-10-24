@@ -93,6 +93,10 @@ section>div.container {
     bottom: -8px;
     left: 73px;
     transition: transform 0.3s ease;
+    
+}
+.draggable-item:hover{
+    cursor: pointer;
 }
 
 .draggable-item.dragging {
@@ -126,10 +130,12 @@ section>div.container {
     padding: 18px 12px;
     z-index: 999;
     position: absolute;
-    bottom: 111px;
+    bottom: 54px;
     cursor: pointer;
     text-decoration: none;
     color: black;
+    width: 174px;
+    text-align: center;
 }
 
 #payCard.show {
@@ -272,7 +278,7 @@ summary::-webkit-details-marker {
     display: block;
     padding: .4em .4em .4em 2em;
     margin: .5em 0;
-    background: #DAD2CA;
+    background: rgb(252 224 0 / 20%);;
     color: #444;
     text-decoration: none;
     border-radius: .3em;
@@ -294,7 +300,7 @@ summary::-webkit-details-marker {
     left: -1.3em;
     top: 50%;
     margin-top: -1.3em;
-    background: #8FD4C1;
+    background: rgba(252, 224, 0, 1);;
     height: 2em;
     width: 2em;
     line-height: 2em;
@@ -303,6 +309,30 @@ summary::-webkit-details-marker {
     font-weight: bold;
     border-radius: 2em;
     transition: all .3s ease-out;
+}
+
+.label {
+    display: none; /* Скрываем по умолчанию */
+    position: absolute; /* Абсолютное позиционирование */
+    /* bottom: 100%; Ставим над элементом */
+    left: 50%; /* Центруем по горизонтали */
+    transform: translateX(-50%); /* Центрируем по горизонтали */
+    background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный фон */
+    border: 1px solid #ccc; /* Граница */
+    padding: 5px;
+    border-radius: 5px; /* Закругленные углы */
+    z-index: 10; /* Чтобы была поверх других элементов */
+}
+
+.label .price{
+    white-space: nowrap;
+}
+.product-container:hover .label {
+    display: block; /* Показываем этикетку при наведении */
+}
+
+.product-container {
+    position: relative; /* Позволяет размещать этикетку относительно контейнера */
 }
 
 

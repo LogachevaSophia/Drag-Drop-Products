@@ -80,7 +80,14 @@ function touchEnd(event) {
 // Назначаем события для всех перетаскиваемых элементов
 const draggableItems = document.querySelectorAll('.draggable-item');
 draggableItems.forEach(item => {
+    item.addEventListener('mousedown', (e) => {
+        e.target.classList.add('dragging'); // Устанавливаем класс для увеличения
+    });
+    item.addEventListener('mouseup', (e) => {
+        e.target.classList.remove('dragging') // Убираем класс для увеличения
+    });
     item.addEventListener('dragstart', (e) => {
+        console.log('dragging')
         e.target.classList.add('dragging'); // Устанавливаем класс для перетаскиваемого элемента
     });
 
