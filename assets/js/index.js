@@ -80,11 +80,24 @@ function touchEnd(event) {
 // Назначаем события для всех перетаскиваемых элементов
 const draggableItems = document.querySelectorAll('.draggable-item');
 draggableItems.forEach(item => {
+
+    const productContainer = item.closest('.product-container');
+    const label = productContainer.querySelector('.label');
+
+    item.addEventListener('mouseenter', () => {
+        label.classList.add("show")
+    });
+
+    item.addEventListener('mouseleave', () => {
+
+        label.classList.remove("show")
+    });
     item.addEventListener('mousedown', (e) => {
         e.target.classList.add('dragging'); // Устанавливаем класс для увеличения
     });
     item.addEventListener('mouseup', (e) => {
         e.target.classList.remove('dragging') // Убираем класс для увеличения
+
     });
     item.addEventListener('dragstart', (e) => {
         console.log('dragging')
@@ -110,7 +123,9 @@ draggableItems.forEach(item => {
     });
 });
 
-
+function closeoverlay(){
+    document.querySelector('.overlay').style.display = 'none';
+}
 function updateBasketPreview() {
     const basketPreview = document.querySelector('.basket-preview');
     const basketList = document.querySelector('#basket-items-list');
