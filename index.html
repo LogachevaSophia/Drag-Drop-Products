@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YandexLOVEka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
+</head>
+
+<body>
+    <section>
+        <div class="basket-preview hidden">
+            <details>
+                <summary><span class="summary-title">Список продуктов:</span>
+                    <div class="summary-chevron-up">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </summary>
+                <!-- <ul id="basket-items-list"></ul> -->
+                <div class="summary-content">
+                    <ol id="basket-items-list" class="rounded" ><li><a href="#">Элемент списка</a></li></ol>
+                    <!-- <ol class="rounded">
+                        <li><a href="#">Элемент списка</a></li>
+                        <li><a href="#">Элемент списка</a></li>
+                        <li><a href="#">Элемент списка</a></li>
+                        <li><a href="#">Элемент списка</a></li>
+                        <li><a href="#">Элемент списка</a></li>
+                      </ol> -->
+                </div>
+                <div class="summary-chevron-down">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-chevron-up">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+            </details>
+
+
+        </div>
+        <div class="container">
+            <div class="shelf">
+                <img src="./assets/img/Group.png" alt="Shelf" class="shelf-image" />
+                <div class="products">
+                    <div class="shelf-item">
+                        <img src="./assets/img/bottle wine.png" class="draggable-item" alt="Бутылка вина" data-link="https://lavka.yandex.ru/good/vino-bezalkogolnoe-cabernet-tempranillo-vina-albali-krasnoe-750-millilitre"/>
+                        <img src="./assets/img/bottle milk.png" class="draggable-item" alt="Молоко" data-link="https://lavka.yandex.ru/good/moloko-32percent-domik-v-derevne-ultrapasterizovannoe-950-gram"/>
+                        <img src="./assets/img/jam.png" alt="Джем" class="draggable-item" />
+                        <img src="./assets/img/cheese.png" alt="Сыр" class="draggable-item" />
+                    </div>
+                    <div class="shelf-item">
+                        <img src="./assets/img/meel.png" alt="Мясо" class="draggable-item" />
+                        <img src="./assets/img/chicken.png" alt="Курица" class="draggable-item" />
+                        <img src="./assets/img/chips.png" alt="Чипсы" class="draggable-item" />
+                    </div>
+                    <div class="shelf-item">
+                        <img src="./assets/img/ananas.png" alt="Ананас" class="draggable-item" />
+                        <img src="./assets/img/bananas.png" alt="Бананы" class="draggable-item" />
+                        <img src="./assets/img/apples.png" alt="Яблоки" class="draggable-item" />
+                        <img src="./assets/img/greens.png" alt="Зелень" class="draggable-item" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="basket block" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <img src="./assets/img/card.png" alt="Basket" class="basket-image" />
+
+            </div>
+            <a href="https://lavka.yandex.ru/" id="payCard" target="_blank">Оплатить корзину</a>
+        </div>
+
+
+    </section>
+
+
+
+
+</body>
+<script src="./assets/js/index.js"></script>
+
+</html>
