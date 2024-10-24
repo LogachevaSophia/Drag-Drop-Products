@@ -51,14 +51,18 @@ function calc_position(pageX, item) {
 }
 
 // Обработчик для touchmove
-function touchMove(event) {
+function touchMove(event, clonedElement, offsetX, offsetY) {
     event.preventDefault();
     const touchLocation = event.targetTouches[0]; // Получаем координаты касания
     const item = event.target;
 
     // Изменяем позицию элемента в реальном времени
     item.style.left = `calc(${calc_position(touchLocation.pageX, item)}px  - (100vw - ${basketJson.width}px) / 2)`
-
+    if (clonedElement) {
+        clonedElement.style.position = 'absolute'; // Устанавливаем абсолютное позиционирование
+        clonedElement.style.left = `${touchLocation.pageX - offsetX}px`; // Обновляем X с учетом смещения
+        clonedElement.style.top = `${touchLocation.pageY - offsetY}px`; // Обновляем Y с учетом смещения
+    }
 }
 
 // Обработчик для touchend (когда отпустили)
@@ -103,8 +107,8 @@ draggableItems.forEach(item => {
     item.addEventListener('drag', (e) => {
         if (clonedElement) {
             clonedElement.style.position = 'absolute'; // Устанавливаем абсолютное позиционирование
-            clonedElement.style.left = `${e.pageX-offsetX}px`; // Обновляем X с учетом смещения
-            clonedElement.style.top = `${e.pageY-offsetY}px`; // Обновляем Y с учетом смещения
+            clonedElement.style.left = `${e.pageX - offsetX}px`; // Обновляем X с учетом смещения
+            clonedElement.style.top = `${e.pageY - offsetY}px`; // Обновляем Y с учетом смещения
         }
 
 
@@ -147,19 +151,31 @@ draggableItems.forEach(item => {
     // Добавляем поддержку касаний для мобильных устройств
     item.addEventListener('touchstart', (e) => {
         e.target.classList.add('dragging'); // Устанавливаем класс
-        navigator.vibrate(200);
+        
         if (!label.classList.contains("show"))
             label.classList.add("show")
         else
             label.classList.remove("show")
+        clonedElement = item.cloneNode(true);
+        document.body.appendChild(clonedElement);
+        const rect = item.getBoundingClientRect();
+        const touchLocation = event.targetTouches[0]; 
+        offsetX = touchLocation.clientX - rect.left;
+        offsetY = touchLocation.clientY - rect.top;
+        navigator.vibrate(200);
     });
 
-    item.addEventListener('touchmove', touchMove); // Обрабатываем перемещение
+    item.addEventListener('touchmove', (e) => touchMove(e, clonedElement, offsetX, offsetY)); // Обрабатываем перемещение
     item.addEventListener('touchend', (e) => {
         if (label.classList.contains("show"))
             label.classList.remove("show")
 
         e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
+        if (clonedElement) {
+            // Удаляем клонированный элемент
+            document.body.removeChild(clonedElement);
+            clonedElement = null; // Сбрасываем переменную
+        }
         touchEnd(e); // Обрабатываем конец перетаскивания
     });
 });
