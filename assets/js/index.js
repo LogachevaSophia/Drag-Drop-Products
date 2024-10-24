@@ -84,9 +84,6 @@ draggableItems.forEach(item => {
     const productContainer = item.closest('.product-container');
     const label = productContainer.querySelector('.label');
 
-    item.addEventListener('mouseenter', () => {
-        label.classList.add("show")
-    });
 
     item.addEventListener('mouseleave', () => {
 
@@ -94,30 +91,50 @@ draggableItems.forEach(item => {
     });
     item.addEventListener('mousedown', (e) => {
         e.target.classList.add('dragging'); // Устанавливаем класс для увеличения
+        if (!label.classList.contains("show"))
+            label.classList.add("show")
+        else
+            label.classList.remove("show")
     });
     item.addEventListener('mouseup', (e) => {
         e.target.classList.remove('dragging') // Убираем класс для увеличения
+        if (!label.classList.contains("show"))
+            label.classList.remove("show")
 
     });
     item.addEventListener('dragstart', (e) => {
-        console.log('dragging')
         e.target.classList.add('dragging'); // Устанавливаем класс для перетаскиваемого элемента
+        if (!label.classList.contains("show"))
+            label.classList.add("show")
+        else
+            label.classList.remove("show")
     });
 
     item.addEventListener('dragend', (e) => {
         e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
-        console.log(e.clientX);
+
+        
         e.target.style.left = `calc(${calc_position(e.clientX, item)}px - (100vw - ${basketJson.width}px) / 2`
+        if (!label.classList.contains("show"))
+            label.classList.remove("show")
+          
     });
 
     // Добавляем поддержку касаний для мобильных устройств
     item.addEventListener('touchstart', (e) => {
         e.target.classList.add('dragging'); // Устанавливаем класс
         navigator.vibrate(200);
+        if (!label.classList.contains("show"))
+            label.classList.add("show")
+        else
+            label.classList.remove("show")
     });
 
     item.addEventListener('touchmove', touchMove); // Обрабатываем перемещение
     item.addEventListener('touchend', (e) => {
+        if (label.classList.contains("show"))
+            label.classList.remove("show")
+           
         e.target.classList.remove('dragging'); // Убираем класс после перетаскивания
         touchEnd(e); // Обрабатываем конец перетаскивания
     });

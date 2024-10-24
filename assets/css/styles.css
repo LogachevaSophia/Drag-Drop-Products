@@ -344,7 +344,7 @@ summary::-webkit-details-marker {
     white-space: nowrap;
     font-weight: 700;
 }
-.product-container:hover .label {
+.product-container .label.show {
     display: block; /* Показываем этикетку при наведении */
     transition: .3s ease-out;
 }
